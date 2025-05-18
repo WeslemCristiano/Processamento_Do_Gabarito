@@ -1,0 +1,156 @@
+import cv2
+import numpy as np
+import os
+
+imagem_path = r"C:\Users\User\Downloads\img_anonimizado\01049101.jpg"
+gabarito_path = r"C:\Users\User\Downloads\img_anonimizado\gabarito.txt"
+NUM_COLUNAS = 3
+QUESTOES_POR_COLUNA = 20
+OPCOES = 5
+THRESHOLD_MARCACAO = 30
+ALTURA_INICIAL = 70
+largura, altura = 600, 800
+modo_debug = True
+
+#Carregar gabarito 
+with open(gabarito_path, "r", encoding="utf-8") as f:
+    gabarito_correto = [resposta.strip().lower() for resposta in f.read().splitlines()]
+if len(gabarito_correto) != 60:
+    raise ValueError("O gabarito deve conter exatamente 60 respostas.")
+
+# Carregar imagem
+img = cv2.imread(imagem_path)
+if img is None:
+    raise FileNotFoundError(f"Imagem não encontrada: {imagem_path}")
+
+# Pré-processamento para detecção dos triângulos
+gray_tri = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+blur_tri = cv2.GaussianBlur(gray_tri, (5, 5), 0)
+edges_tri = cv2.Canny(blur_tri, 50, 150)
+contours, _ = cv2.findContours(edges_tri, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+triangles = []
+for cnt in contours:
+    approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
+    if len(approx) == 3 and cv2.contourArea(cnt) > 150:
+        M = cv2.moments(cnt)
+        if M["m00"] != 0:
+            cx = int(M["m10"] / M["m00"])
+            cy = int(M["m01"] / M["m00"])
+            triangles.append((cx, cy))
+
+if len(triangles) < 4:
+    raise ValueError("Não foram detectados 4 triângulos nos cantos do cartão.")
+
+triangles = np.array(triangles)
+soma = triangles.sum(axis=1)
+diff = np.diff(triangles, axis=1).flatten()
+ordem = [
+    np.argmin(soma),  # topo-esquerda
+    np.argmin(diff),  # topo-direita
+    np.argmax(soma),  # baixo-direita
+    np.argmax(diff),  # baixo-esquerda
+]
+pts_src = triangles[ordem].astype(np.float32)
+pts_dst = np.array([[0, 0], [largura, 0], [largura, altura], [0, altura]], dtype=np.float32)
+
+# Corrigir perspectiva
+matrix = cv2.getPerspectiveTransform(pts_src, pts_dst)
+warped = cv2.warpPerspective(img, matrix, (largura, altura))
+
+#Aplicar máscara para manter só a área útil
+# Aplicar filtro de cor para destacar a área útil
+mask = np.zeros((altura, largura), dtype=np.uint8)
+cv2.fillConvexPoly(mask, pts_dst.astype(np.int32), 255)
+warped_masked = cv2.bitwise_and(warped, warped, mask=mask)
+
+# Separar colunas
+col_width = largura // NUM_COLUNAS
+columns = [warped_masked[:, i * col_width:(i + 1) * col_width] for i in range(NUM_COLUNAS)]
+columns = [col[ALTURA_INICIAL:-85, :] for col in columns]
+
+# Detecção de caixas de resposta
+def detectar_caixas_por_contorno(linha_binaria):
+    contornos, _ = cv2.findContours(linha_binaria, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    caixas_detectadas = []
+    for cnt in contornos:
+        x, y, w, h = cv2.boundingRect(cnt)
+        aspecto = w / h if h != 0 else 0
+        area = cv2.contourArea(cnt)
+
+        # Critérios relaxados
+        if 8 < w < 50 and 8 < h < 50 and 0.6 < aspecto < 1.4 and area > 30:
+            caixas_detectadas.append((x, y, w, h))
+
+    caixas_detectadas = sorted(caixas_detectadas, key=lambda c: c[0])
+    return caixas_detectadas
+
+# Analisar uma linha de questão
+def analisar_linha(linha_binaria, linha_colorida, numero_questao):
+    caixas = detectar_caixas_por_contorno(linha_binaria)
+    resultados = {}
+    letras = ['A', 'B', 'C', 'D', 'E']
+
+    for i, (x, y, w, h) in enumerate(caixas[:5]):
+        regiao = linha_binaria[y:y + h, x:x + w]
+        brancos = np.count_nonzero(regiao == 255)
+        letra = letras[i]
+        resultados[letra] = brancos
+
+        if modo_debug:
+            cv2.rectangle(linha_colorida, (x, y), (x + w, y + h), (0, 255, 0), 1)
+            cv2.putText(linha_colorida, letra, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+
+    if modo_debug:
+        os.makedirs("debug_linhas", exist_ok=True)
+        cv2.imwrite(f"debug_linhas/q{numero_questao:02d}.png", linha_colorida)
+
+    if not resultados:
+        return '?', resultados
+
+    marcada = max(resultados.items(), key=lambda x: x[1])
+    if marcada[1] >= THRESHOLD_MARCACAO:
+        return marcada[0], resultados
+    else:
+        return '?', resultados
+
+# Processar todas as questões
+respostas = []
+relatorio = []
+corretas = 0
+numero_questao = 1
+
+for col_idx, col in enumerate(columns):
+    question_height = col.shape[0] // QUESTOES_POR_COLUNA
+    for i in range(QUESTOES_POR_COLUNA):
+        y1 = i * question_height
+        y2 = (i + 1) * question_height
+        linha = col[y1:y2, :]
+        linha_gray = cv2.cvtColor(linha, cv2.COLOR_BGR2GRAY)
+
+        # Binarização robusta com Otsu
+        _, linha_bin = cv2.threshold(linha_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+        marcada, marcacoes = analisar_linha(linha_bin, linha.copy(), numero_questao)
+        correta = gabarito_correto[numero_questao - 1].upper()
+        acertou = marcada == correta
+        simbolo = "✓" if acertou else "✘"
+
+        if acertou:
+            corretas += 1
+
+        respostas.append(f"{numero_questao}-{marcada}")
+        relatorio.append(f"{numero_questao:02d}. Marcada: {marcada} | Correta: {correta} {simbolo}")
+        print(f"Questão {numero_questao:02d}: Marcada = {marcada}, Correta = {correta}, Pixels = {marcacoes}")
+        numero_questao += 1
+
+# Salvar resultado final
+with open("respostas.txt", "w", encoding="utf-8") as f:
+    f.write("Respostas detectadas:\n")
+    f.write(", ".join(respostas) + "\n\n")
+    f.write("Relatório detalhado:\n")
+    f.write("\n".join(relatorio) + "\n")
+    f.write(f"\nTotal de acertos: {corretas}/60\n")
+    f.write(f"Aproveitamento: {corretas / 60 * 100:.2f}%\n")
+
+print("✅ Correção finalizada. Verifique o arquivo 'respostas.txt' e as imagens em 'debug_linhas/'.")

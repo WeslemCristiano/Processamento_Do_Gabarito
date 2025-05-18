@@ -1,0 +1,67 @@
+Respostas detectadas:
+1-C, 2-D, 3-D, 4-A, 5-D, 6-C, 7-E, 8-B, 9-A, 10-C, 11-B, 12-D, 13-C, 14-B, 15-A, 16-D, 17-A, 18-E, 19-A, 20-A, 21-D, 22-A, 23-E, 24-B, 25-E, 26-D, 27-E, 28-C, 29-A, 30-D, 31-C, 32-C, 33-C, 34-A, 35-D, 36-E, 37-B, 38-B, 39-C, 40-C, 41-D, 42-A, 43-B, 44-C, 45-B, 46-C, 47-A, 48-B, 49-C, 50-D, 51-D, 52-D, 53-A, 54-E, 55-D, 56-D, 57-C, 58-A, 59-E, 60-A
+
+Relatório detalhado:
+01. Marcada: C | Correta: C ✓
+02. Marcada: D | Correta: D ✓
+03. Marcada: D | Correta: D ✓
+04. Marcada: A | Correta: A ✓
+05. Marcada: D | Correta: D ✓
+06. Marcada: C | Correta: C ✓
+07. Marcada: E | Correta: E ✓
+08. Marcada: B | Correta: B ✓
+09. Marcada: A | Correta: A ✓
+10. Marcada: C | Correta: C ✓
+11. Marcada: B | Correta: B ✓
+12. Marcada: D | Correta: D ✓
+13. Marcada: C | Correta: C ✓
+14. Marcada: B | Correta: B ✓
+15. Marcada: A | Correta: A ✓
+16. Marcada: D | Correta: D ✓
+17. Marcada: A | Correta: A ✓
+18. Marcada: E | Correta: E ✓
+19. Marcada: A | Correta: A ✓
+20. Marcada: A | Correta: A ✓
+21. Marcada: D | Correta: D ✓
+22. Marcada: A | Correta: A ✓
+23. Marcada: E | Correta: E ✓
+24. Marcada: B | Correta: B ✓
+25. Marcada: E | Correta: E ✓
+26. Marcada: D | Correta: D ✓
+27. Marcada: E | Correta: E ✓
+28. Marcada: C | Correta: C ✓
+29. Marcada: A | Correta: A ✓
+30. Marcada: D | Correta: D ✓
+31. Marcada: C | Correta: C ✓
+32. Marcada: C | Correta: C ✓
+33. Marcada: C | Correta: C ✓
+34. Marcada: A | Correta: A ✓
+35. Marcada: D | Correta: D ✓
+36. Marcada: E | Correta: E ✓
+37. Marcada: B | Correta: B ✓
+38. Marcada: B | Correta: B ✓
+39. Marcada: C | Correta: C ✓
+40. Marcada: C | Correta: C ✓
+41. Marcada: D | Correta: D ✓
+42. Marcada: A | Correta: A ✓
+43. Marcada: B | Correta: B ✓
+44. Marcada: C | Correta: C ✓
+45. Marcada: B | Correta: B ✓
+46. Marcada: C | Correta: C ✓
+47. Marcada: A | Correta: A ✓
+48. Marcada: B | Correta: B ✓
+49. Marcada: C | Correta: C ✓
+50. Marcada: D | Correta: D ✓
+51. Marcada: D | Correta: D ✓
+52. Marcada: D | Correta: D ✓
+53. Marcada: A | Correta: A ✓
+54. Marcada: E | Correta: E ✓
+55. Marcada: D | Correta: D ✓
+56. Marcada: D | Correta: D ✓
+57. Marcada: C | Correta: C ✓
+58. Marcada: A | Correta: A ✓
+59. Marcada: E | Correta: E ✓
+60. Marcada: A | Correta: A ✓
+
+Total de acertos: 60/60
+Aproveitamento: 100.00%
