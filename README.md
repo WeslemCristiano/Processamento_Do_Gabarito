@@ -2,8 +2,8 @@
 
 ## 📄 Correção Automática de Cartões de Resposta
 
-*Alunos: Weslem, Giovanni, Luis.
-*Professor: Wellington Della Mura 
+* Alunos: Weslem, Giovanni, Luis.
+* Professor: Wellington Della Mura 
 
 **Projeto:** Leitor automático de cartões de múltipla escolha com detecção visual de marcações.
 **Tecnologias:** Python, OpenCV, NumPy
