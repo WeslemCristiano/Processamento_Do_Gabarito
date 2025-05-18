@@ -1,9 +1,7 @@
-
-
 ## 📄 Correção Automática de Cartões de Resposta
 
-* Alunos: Weslem, Giovanni, Luis.
-* Professor: Wellington Della Mura 
+* **Alunos:** Weslem, Giovanni, Luis
+* **Professor:** Wellington Della Mura
 
 **Projeto:** Leitor automático de cartões de múltipla escolha com detecção visual de marcações.
 **Tecnologias:** Python, OpenCV, NumPy
@@ -30,112 +28,138 @@ Melhorar a qualidade visual e extrair bordas para permitir a **detecção dos ma
 ### 📌 Técnicas:
 
 * `cv2.findContours()`: Identificação de contornos.
-* `cv2.approxPolyDP()`: Aproximação de polígonos para contornos.
+* `cv2.approxPolyDP()`: Aproximação de polígonos.
 * `cv2.contourArea()`: Filtro por área mínima.
-* `cv2.moments()` + centroide: Cálculo da posição central dos triângulos.
+* `cv2.moments()` + centroide: Cálculo do centro de massa de cada triângulo.
+* **Filtro vertical**: Ignora triângulos muito acima (ex: próximos ao código de barras).
 
 ### 🎯 Objetivo:
 
-Detectar os 4 triângulos nos cantos do cartão para permitir a **correção de perspectiva**. Essas formas são escolhidas por serem fáceis de identificar e resistentes a ruídos.
+Detectar os 4 triângulos posicionados nas bordas do cartão. Esses pontos são fundamentais para **corrigir a perspectiva da imagem** e alinhar o cartão.
 
 ---
 
-## 🔄 3. **Correção de Perspectiva (Homografia)**
+## 🔁 3. **Ordenação dos Triângulos**
+
+### 📌 Técnicas:
+
+* Função `ordenar_pontos_triangulos()`:
+
+  * Baseada na **soma e diferença das coordenadas** `x + y` e `x - y`
+  * Identifica e ordena os triângulos em: **superior esquerdo**, **superior direito**, **inferior direito**, **inferior esquerdo**
+
+### 🎯 Objetivo:
+
+Evitar distorções ao aplicar a homografia. A ordem correta dos pontos é essencial para gerar uma imagem “reta” e proporcional.
+
+---
+
+## 🔄 4. **Correção de Perspectiva (Homografia)**
 
 ### 📌 Técnicas:
 
 * `cv2.getPerspectiveTransform()`: Cálculo da matriz de transformação.
-* `cv2.warpPerspective()`: Aplicação da homografia para alinhar o cartão na imagem.
+* `cv2.warpPerspective()`: Aplicação da transformação para alinhar o cartão.
 
 ### 🎯 Objetivo:
 
-Corrigir distorções provocadas por inclinação da câmera ou escaneamento torto, garantindo que o cartão fique "reto" e padronizado.
+Elimina distorções de inclinação da câmera ou escaneamento torto, permitindo análise precisa das marcações.
 
 ---
 
-## 📊 4. **Segmentação do Cartão em Colunas e Linhas**
+## 🧼 5. **Limpeza Fora da Área do Cartão (Máscara Branca)**
 
 ### 📌 Técnicas:
 
-* Divisão da imagem com base em coordenadas conhecidas (divisão em 3 colunas e 20 linhas por coluna).
-* Crop da altura inicial e final para isolar as linhas das questões.
+* `cv2.fillConvexPoly()`: Criação de máscara poligonal da área do cartão.
+* `cv2.bitwise_and()` + substituição de pixels externos por branco (`255`).
 
 ### 🎯 Objetivo:
 
-Facilitar o acesso direto a cada **linha de questão**, possibilitando análise independente de cada uma.
+**Remover sujeiras, bordas escaneadas, texto, barras e sombras** fora do cartão — mantendo apenas o conteúdo relevante.
 
 ---
 
-## 🧾 5. **Binarização**
+## 📊 6. **Segmentação do Cartão em Colunas e Linhas**
 
 ### 📌 Técnicas:
 
-* `cv2.threshold()` com método `cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU`
+* Divisão do cartão em 3 colunas fixas.
+* Corte vertical para eliminar espaço superior e inferior.
+* Cálculo da altura de cada linha proporcionalmente.
 
 ### 🎯 Objetivo:
 
-Converter cada linha para **imagem binária (preto e branco)**. O método de Otsu ajusta automaticamente o limiar de binarização com base no histograma da imagem, sendo ideal para imagens com variação de iluminação.
+Organizar visualmente a imagem para permitir análise individual de cada questão.
 
 ---
 
-## ⬛ 6. **Detecção das Alternativas por Contornos**
+## 🧾 7. **Binarização**
 
 ### 📌 Técnicas:
 
-* `cv2.findContours()` novamente nas linhas binarizadas.
-* `cv2.boundingRect()`: Extração das coordenadas das caixas de alternativas.
+* `cv2.threshold()` com `cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU`
+
+### 🎯 Objetivo:
+
+Transformar as linhas em preto e branco, facilitando a análise de marcações. O método de Otsu ajusta automaticamente o limiar com base no contraste local.
+
+---
+
+## ⬛ 8. **Detecção das Alternativas por Contornos**
+
+### 📌 Técnicas:
+
+* `cv2.findContours()` nas imagens binárias.
+* `cv2.boundingRect()` para extrair coordenadas.
 * Filtros por:
 
-  * **Largura e altura**
-  * **Aspect ratio**
-  * **Área do contorno**
+  * Largura e altura (ex: 8–50 px)
+  * Aspect ratio (0.6–1.4)
+  * Área mínima (> 30 px)
 
 ### 🎯 Objetivo:
 
-Identificar as **5 caixas (A–E)** presentes em cada linha, sem depender de coordenadas fixas. Isso torna o sistema adaptável a pequenas variações de alinhamento e escaneamento.
+Detectar as caixas das alternativas A–E **sem depender de posições fixas**, o que torna o sistema flexível a diferentes modelos de cartões.
 
 ---
 
-## 📈 7. **Análise de Marcação**
+## 📈 9. **Análise de Marcação**
 
 ### 📌 Técnicas:
 
-* `np.count_nonzero()`: Contagem de pixels **brancos** dentro de cada caixa detectada.
-* Comparação da contagem com um **limiar mínimo (`THRESHOLD_MARCACAO`)**.
+* `np.count_nonzero()`: Conta os pixels brancos (correspondentes a marcações pretas invertidas).
+* Seleciona a alternativa com maior quantidade de pixels acima do **limiar de marcação**.
 
 ### 🎯 Objetivo:
 
-Determinar qual caixa está marcada com base na **intensidade da marcação** (mais pixels brancos indicam marcação mais escura na versão binária invertida).
+Determinar com confiabilidade qual alternativa foi marcada em cada linha.
 
 ---
 
-## 🟩 8. **Depuração Visual (Debug)**
+## 🟩 10. **Depuração Visual (Debug)**
 
 ### 📌 Técnicas:
 
-* `cv2.rectangle()`: Desenho das caixas detectadas.
-* `cv2.putText()`: Colocação de letra indicadora (A–E).
-* `cv2.imwrite()`: Salvamento de imagens com marcações visuais.
+* `cv2.rectangle()`: Desenha retângulos nas caixas detectadas.
+* `cv2.putText()`: Rotula cada caixa com sua letra correspondente (A–E).
+* `cv2.imwrite()`: Salva imagens da análise de cada linha (`debug_linhas/`).
 
 ### 🎯 Objetivo:
 
-Permitir **inspeção manual** das regiões de interesse para validação e ajuste do sistema.
+Permitir inspeção manual do processo — fundamental para ajuste e validação do sistema.
 
 ---
 
-## 📋 9. **Geração de Relatório**
+## 📋 11. **Geração de Relatório Final**
 
 ### 📌 Técnicas:
 
-* Escrita em arquivos `.txt` para salvar:
+* Escrita em `.txt` com:
 
-  * Respostas detectadas.
-  * Correções com ✓/✘.
-  * Total de acertos e porcentagem de aproveitamento.
+  * Lista das alternativas detectadas.
+  * Comparação com gabarito.
+  * Correções marcadas com `✓` e `✘`.
+  * Total de acertos e percentual de aproveitamento.
 
 ---
-
-
-
-
-
