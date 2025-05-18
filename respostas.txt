@@ -1,67 +1,67 @@
 Respostas detectadas:
-1-C, 2-D, 3-D, 4-A, 5-D, 6-C, 7-E, 8-B, 9-A, 10-C, 11-B, 12-D, 13-C, 14-B, 15-A, 16-D, 17-A, 18-E, 19-A, 20-A, 21-D, 22-A, 23-E, 24-B, 25-E, 26-D, 27-E, 28-C, 29-A, 30-D, 31-C, 32-C, 33-C, 34-A, 35-D, 36-E, 37-B, 38-B, 39-C, 40-C, 41-D, 42-A, 43-B, 44-C, 45-B, 46-C, 47-A, 48-B, 49-C, 50-D, 51-D, 52-D, 53-A, 54-E, 55-D, 56-D, 57-C, 58-A, 59-E, 60-A
+1-C, 2-C, 3-D, 4-B, 5-A, 6-A, 7-A, 8-B, 9-D, 10-A, 11-A, 12-A, 13-B, 14-B, 15-C, 16-D, 17-D, 18-B, 19-D, 20-B, 21-A, 22-A, 23-B, 24-B, 25-C, 26-A, 27-B, 28-A, 29-D, 30-E, 31-A, 32-B, 33-C, 34-B, 35-D, 36-A, 37-B, 38-B, 39-B, 40-A, 41-B, 42-A, 43-D, 44-A, 45-D, 46-D, 47-D, 48-B, 49-C, 50-C, 51-E, 52-B, 53-D, 54-D, 55-A, 56-A, 57-C, 58-E, 59-C, 60-A
 
 Relatório detalhado:
 01. Marcada: C | Correta: C ✓
-02. Marcada: D | Correta: D ✓
+02. Marcada: C | Correta: D ✘
 03. Marcada: D | Correta: D ✓
-04. Marcada: A | Correta: A ✓
-05. Marcada: D | Correta: D ✓
-06. Marcada: C | Correta: C ✓
-07. Marcada: E | Correta: E ✓
+04. Marcada: B | Correta: A ✘
+05. Marcada: A | Correta: D ✘
+06. Marcada: A | Correta: C ✘
+07. Marcada: A | Correta: E ✘
 08. Marcada: B | Correta: B ✓
-09. Marcada: A | Correta: A ✓
-10. Marcada: C | Correta: C ✓
-11. Marcada: B | Correta: B ✓
-12. Marcada: D | Correta: D ✓
-13. Marcada: C | Correta: C ✓
+09. Marcada: D | Correta: A ✘
+10. Marcada: A | Correta: C ✘
+11. Marcada: A | Correta: B ✘
+12. Marcada: A | Correta: D ✘
+13. Marcada: B | Correta: C ✘
 14. Marcada: B | Correta: B ✓
-15. Marcada: A | Correta: A ✓
+15. Marcada: C | Correta: A ✘
 16. Marcada: D | Correta: D ✓
-17. Marcada: A | Correta: A ✓
-18. Marcada: E | Correta: E ✓
-19. Marcada: A | Correta: A ✓
-20. Marcada: A | Correta: A ✓
-21. Marcada: D | Correta: D ✓
+17. Marcada: D | Correta: A ✘
+18. Marcada: B | Correta: E ✘
+19. Marcada: D | Correta: A ✘
+20. Marcada: B | Correta: A ✘
+21. Marcada: A | Correta: D ✘
 22. Marcada: A | Correta: A ✓
-23. Marcada: E | Correta: E ✓
+23. Marcada: B | Correta: E ✘
 24. Marcada: B | Correta: B ✓
-25. Marcada: E | Correta: E ✓
-26. Marcada: D | Correta: D ✓
-27. Marcada: E | Correta: E ✓
-28. Marcada: C | Correta: C ✓
-29. Marcada: A | Correta: A ✓
-30. Marcada: D | Correta: D ✓
-31. Marcada: C | Correta: C ✓
-32. Marcada: C | Correta: C ✓
+25. Marcada: C | Correta: E ✘
+26. Marcada: A | Correta: D ✘
+27. Marcada: B | Correta: E ✘
+28. Marcada: A | Correta: C ✘
+29. Marcada: D | Correta: A ✘
+30. Marcada: E | Correta: D ✘
+31. Marcada: A | Correta: C ✘
+32. Marcada: B | Correta: C ✘
 33. Marcada: C | Correta: C ✓
-34. Marcada: A | Correta: A ✓
+34. Marcada: B | Correta: A ✘
 35. Marcada: D | Correta: D ✓
-36. Marcada: E | Correta: E ✓
+36. Marcada: A | Correta: E ✘
 37. Marcada: B | Correta: B ✓
 38. Marcada: B | Correta: B ✓
-39. Marcada: C | Correta: C ✓
-40. Marcada: C | Correta: C ✓
-41. Marcada: D | Correta: D ✓
+39. Marcada: B | Correta: C ✘
+40. Marcada: A | Correta: C ✘
+41. Marcada: B | Correta: D ✘
 42. Marcada: A | Correta: A ✓
-43. Marcada: B | Correta: B ✓
-44. Marcada: C | Correta: C ✓
-45. Marcada: B | Correta: B ✓
-46. Marcada: C | Correta: C ✓
-47. Marcada: A | Correta: A ✓
+43. Marcada: D | Correta: B ✘
+44. Marcada: A | Correta: C ✘
+45. Marcada: D | Correta: B ✘
+46. Marcada: D | Correta: C ✘
+47. Marcada: D | Correta: A ✘
 48. Marcada: B | Correta: B ✓
 49. Marcada: C | Correta: C ✓
-50. Marcada: D | Correta: D ✓
-51. Marcada: D | Correta: D ✓
-52. Marcada: D | Correta: D ✓
-53. Marcada: A | Correta: A ✓
-54. Marcada: E | Correta: E ✓
-55. Marcada: D | Correta: D ✓
-56. Marcada: D | Correta: D ✓
+50. Marcada: C | Correta: D ✘
+51. Marcada: E | Correta: D ✘
+52. Marcada: B | Correta: D ✘
+53. Marcada: D | Correta: A ✘
+54. Marcada: D | Correta: E ✘
+55. Marcada: A | Correta: D ✘
+56. Marcada: A | Correta: D ✘
 57. Marcada: C | Correta: C ✓
-58. Marcada: A | Correta: A ✓
-59. Marcada: E | Correta: E ✓
+58. Marcada: E | Correta: A ✘
+59. Marcada: C | Correta: E ✘
 60. Marcada: A | Correta: A ✓
 
-Total de acertos: 60/60
-Aproveitamento: 100.00%
+Total de acertos: 16/60
+Aproveitamento: 26.67%
